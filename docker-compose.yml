@@ -1,0 +1,96 @@
+version: '3'
+services:
+  redis:
+    image: redis:7.2.3-alpine
+    container_name: virta_redis
+    command: [ "redis-server", "--appendonly", "yes" ]
+    networks:
+      - virtanet0
+    ports:
+      - '6379:6379'
+    restart: always
+    tty: true
+    volumes:
+      - redis_data:/data
+  nginx:
+    hostname: httpd
+    container_name: virta_httpd
+    build:
+      dockerfile: Dockerfile
+      context: './nginx'
+    ports:
+      - '4040:4041'
+    networks:
+      - virtanet0
+    restart: always
+    tty: true
+    volumes:
+      - ./api:/var/www/html/
+    depends_on:
+      - api
+      - ui
+  api:
+    container_name: virta_api
+    build:
+      dockerfile: Dockerfile
+      context: 'api'
+    volumes:
+      - ./api:/var/www/html/:cached
+    networks:
+      - virtanet0
+    ports:
+      - '9000:9000'
+    tty: true
+    depends_on:
+      - db
+  db:
+    hostname: postgres
+    container_name: virta_db
+    build:
+      context: 'db'
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - virtanet0
+    environment:
+      POSTGRES_DB: ${DATABASE_DB}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./db/scripts:/docker-entrypoint-initdb.d
+  stations_helper:
+    build:
+      dockerfile: Dockerfile
+      context: 'stations_helper'
+    volumes:
+      - './stations_helper/node_modules:/app/node_modules/'
+      - './stations_helper:/app'
+    networks:
+      - virtanet0
+    ports:
+      - '5000:5000'
+    tty: true
+  ui:
+    container_name: virta_ui
+    build:
+      dockerfile: Dockerfile
+      context: 'ui'
+    volumes:
+      - './ui/node_modules:/app/node_modules/'
+      - './ui:/app'
+#      - '/app/node_modules'
+    networks:
+      - virtanet0
+    ports:
+      - '3000:3000'
+    tty: true
+networks:
+  virtanet0:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: 'false'
+volumes:
+  redis_data:
+    external: false

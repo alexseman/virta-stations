@@ -1,0 +1,989 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Virta Stations API",
+        "contact": {
+            "email": "mail@alexseman.com"
+        },
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/companies": {
+            "get": {
+                "tags": [
+                    "companies",
+                    "index",
+                    "get"
+                ],
+                "summary": "Companies Index",
+                "description": "Returns a paginated index of the companies",
+                "operationId": "CompaniesIndex",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "companies",
+                    "store",
+                    "post"
+                ],
+                "summary": "Companies Store/Create",
+                "description": "Returns a list of companies that meet the search criteria",
+                "operationId": "CompaniesStore",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "name": {
+                                                "description": "Company name",
+                                                "type": "string"
+                                            },
+                                            "parent_id": {
+                                                "description": "The ID of the eventual parent company",
+                                                "type": "int|null"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "Greenfelder PLC",
+                                    "parent_id": 234
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "oneOf": [
+                                                {
+                                                    "type": "CompanyResource"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/companies/{companyId}": {
+            "get": {
+                "tags": [
+                    "companies",
+                    "show",
+                    "get"
+                ],
+                "summary": "Companies Edit/Update",
+                "description": "Fetches information about a single company together with its eventual subsidiaries and parent companies",
+                "operationId": "CompaniesShow",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "oneOf": [
+                                                {
+                                                    "type": "CompanyResource"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "companies",
+                    "delete"
+                ],
+                "summary": "Company Delete",
+                "description": "Deletes a company (not a soft delete)",
+                "operationId": "CompaniesDelete",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "companies",
+                    "update",
+                    "patch"
+                ],
+                "summary": "Companies Update",
+                "description": "Update a company",
+                "operationId": "CompaniesUpdate",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "name": {
+                                                "description": "Company name",
+                                                "type": "string"
+                                            },
+                                            "parent_id": {
+                                                "description": "The ID of the parent company",
+                                                "type": "int|null"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "oneOf": [
+                                                {
+                                                    "type": "CompanyResource"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stations": {
+            "get": {
+                "tags": [
+                    "stations",
+                    "index",
+                    "get"
+                ],
+                "summary": "Stations Index",
+                "description": "Returns a paginated index of the stations",
+                "operationId": "stationsIndex",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "all",
+                        "in": "query",
+                        "description": "Overrides pagination and returns all the stations for use for /stations/by-company",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "stations",
+                    "store",
+                    "post"
+                ],
+                "summary": "Stations Store/Create",
+                "description": "Returns a list of stations that meet the search criteria",
+                "operationId": "stationsStore",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "name": {
+                                                "description": "Station name",
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "description": "Station physical address",
+                                                "type": "string"
+                                            },
+                                            "lat": {
+                                                "description": "Latitude part of the station coordinates",
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "long": {
+                                                "description": "Longitude part of the station coordinates",
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "company_id": {
+                                                "description": "The company ID of the station",
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "Riverside Lake 1",
+                                    "address": "3943 Winfield, Agustinaport, RI 15842-8736",
+                                    "lat": 122.704904,
+                                    "long": 71.593214,
+                                    "company_id": 15
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "oneOf": [
+                                                {
+                                                    "type": "StationResource"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stations/search": {
+            "get": {
+                "tags": [
+                    "stations",
+                    "search",
+                    "get"
+                ],
+                "summary": "Stations Search",
+                "description": "Returns a list of stations that meet the search criteria",
+                "operationId": "stationsSearch",
+                "parameters": [
+                    {
+                        "name": "lat",
+                        "in": "query",
+                        "description": "Latitude for the starting point criteria of the stations search",
+                        "required": true
+                    },
+                    {
+                        "name": "long",
+                        "in": "query",
+                        "description": "Longitude for the starting point criteria of the stations search",
+                        "required": true
+                    },
+                    {
+                        "name": "radius",
+                        "in": "query",
+                        "description": "Indicates the KM radius of the search that is to be performed around the starting point",
+                        "required": true
+                    },
+                    {
+                        "name": "company_id",
+                        "in": "query",
+                        "description": "If present the search will be performed only for the stations of the given company and its eventual subsidiaries",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResource"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Successful operation but no results found meeting the criteria",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stations/{stationId}": {
+            "get": {
+                "tags": [
+                    "stations",
+                    "show",
+                    "get"
+                ],
+                "summary": "Stations Edit/Update",
+                "description": "Fetches information about a single station together with informabion about its corresponding company",
+                "operationId": "stationsShow",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "oneOf": [
+                                                {
+                                                    "type": "StationResource"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "stations",
+                    "delete"
+                ],
+                "summary": "Station Delete",
+                "description": "Deletes a station (not a soft delete)",
+                "operationId": "stationsDelete",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "stations",
+                    "update",
+                    "patch"
+                ],
+                "summary": "Stations Update",
+                "description": "Update a station",
+                "operationId": "stationsUpdate",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "name": {
+                                                "description": "Station name",
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "description": "Station physical address",
+                                                "type": "string"
+                                            },
+                                            "lat": {
+                                                "description": "Latitude part of the station coordinates. Required if long field is also present",
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "long": {
+                                                "description": "Longitude part of the station coordinates. Requiref if lat field is also present",
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "company_id": {
+                                                "description": "The company ID of the station",
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "Riverside Lake 1",
+                                    "address": "3943 Winfield, Agustinaport, RI 15842-8736",
+                                    "lat": 122.704904,
+                                    "long": 71.593214,
+                                    "company_id": 15
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "oneOf": [
+                                                {
+                                                    "type": "StationResource"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "errors": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ApiResource": {
+                "title": "ApiResource",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "CompanyResource"
+                                },
+                                {
+                                    "type": "StationResource"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "CompanyResource": {
+                "title": "CompanyResource",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ApiResource"
+                    },
+                    {
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "parent_companies": {
+                                "type": "array",
+                                "items": {
+                                    "anyOf": [
+                                        {
+                                            "type": "CompanyResource"
+                                        }
+                                    ]
+                                }
+                            },
+                            "subsidiaries": {
+                                "type": "array",
+                                "items": {
+                                    "anyOf": [
+                                        {
+                                            "type": "CompanyResource"
+                                        }
+                                    ]
+                                }
+                            },
+                            "created_at": {
+                                "type": "Carbon"
+                            },
+                            "updated_at": {
+                                "type": "Carbon"
+                            },
+                            "parent_id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "StationResource": {
+                "title": "StationResource",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ApiResource"
+                    },
+                    {
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "company_id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "address": {
+                                "type": "string"
+                            },
+                            "location": {
+                                "type": "Clickbar\\Magellan\\Data\\Geometries\\Point"
+                            },
+                            "created_ad": {
+                                "type": "Carbon"
+                            },
+                            "updated_ad": {
+                                "type": "Carbon"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "paths": {
+      "@/resources/*": [
+        "resources/*"
+      ],
+      "@/utils/*": [
+        "utils/*"
+      ],
+      "@/middleware/*": [
+        "middleware/*"
+      ],
+      "@/wrappers/*": [
+        "wrappers/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+//  "ts-node": {
+//    "swc": true
+//  }
+}

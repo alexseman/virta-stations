@@ -1,0 +1,41 @@
+{
+    "preset": "psr12",
+    "exclude": [
+        ".github",
+        "public",
+        "resources",
+        "storage",
+        "vendor",
+        "node_modules"
+    ],
+    "rules": {
+        "single_trait_insert_per_statement": false,
+        "visibility_required": false,
+        "blank_line_between_import_groups": false,
+        "ordered_class_elements": false,
+        "no_unused_imports": true,
+        "align_multiline_comment": true,
+        "binary_operator_spaces": {
+            "default": "single_space",
+            "operators": {
+                "=": "align_single_space_minimal",
+                "=>": "align_single_space_minimal"
+            }
+        },
+        "concat_space": { "spacing": "one" },
+        "array_syntax": {
+            "syntax": "short"
+        },
+        "phpdoc_indent": true,
+        "phpdoc_align": true,
+        "phpdoc_order": true,
+        "phpdoc_separation": true,
+        "phpdoc_scalar": true,
+        "phpdoc_trim": true,
+        "return_type_declaration": true,
+        "single_quote": true,
+        "ordered_imports": {
+            "sort_algorithm": "alpha"
+        }
+    }
+}

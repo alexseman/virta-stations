@@ -1,0 +1,394 @@
+{
+	"info": {
+		"_postman_id": "77575aa2-fbbf-49d7-86fb-83264dae9ea2",
+		"name": "Virta Stations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9824114"
+	},
+	"item": [
+		{
+			"name": "Stations",
+			"item": [
+				{
+					"name": "All Stations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4040/api/stations?all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"stations"
+							],
+							"query": [
+								{
+									"key": "all",
+									"value": null
+								}
+							]
+						},
+						"description": "# Get Stations\n\nThis endpoint retrieves a list of stations.\n\n### HTTP Request\n\n``` http\nGET http://localhost:4040/api/stations\n\n ```\n\n### Response\n\n- Status: 200\n- Content-Type: application/json\n    \n\n``` json\n{\n    \"data\": [\n        {\n            \"id\": 0,\n            \"name\": \"\",\n            \"address\": \"\",\n            \"location\": {\n                \"type\": \"\",\n                \"coordinates\": [0]\n            },\n            \"company_id\": 0,\n            \"created_at\": \"\",\n            \"updated_at\": \"\"\n        }\n    ],\n    \"links\": {\n        \"first\": \"\",\n        \"last\": \"\",\n        \"prev\": null,\n        \"next\": \"\"\n    },\n    \"meta\": {\n        \"current_page\": 0,\n        \"from\": 0,\n        \"last_page\": 0,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"\",\n                \"active\": true\n            }\n        ],\n        \"path\": \"\",\n        \"per_page\": 0,\n        \"to\": 0,\n        \"total\": 0\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Show Station",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4040/api/stations/35",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"stations",
+								"35"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Station",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4040/api/stations/search?lat=71.23&long=122&radius=2000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"stations",
+								"search"
+							],
+							"query": [
+								{
+									"key": "lat",
+									"value": "71.23"
+								},
+								{
+									"key": "long",
+									"value": "122"
+								},
+								{
+									"key": "radius",
+									"value": "2000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Company Stations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4040/api/stations/search?lat=71&long=122&radius=8000&companyId=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"stations",
+								"search"
+							],
+							"query": [
+								{
+									"key": "lat",
+									"value": "71"
+								},
+								{
+									"key": "long",
+									"value": "122"
+								},
+								{
+									"key": "radius",
+									"value": "8000"
+								},
+								{
+									"key": "companyId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Station",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4040/api/stations/651",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"stations",
+								"651"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Station",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"My Station 15-23\",\n    \"lat\": 23,\n    \"long\": 45,\n    \"address\": \"Somewhere nice no. 23\",\n    \"companyId\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4040/api/stations/488",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"stations",
+								"488"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store/Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"My Station 15-23\",\n    \"lat\": 23,\n    \"long\": -45,\n    \"address\": \"Someplace nice no. 23\",\n    \"companyId\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4040/api/stations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"stations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stations Grouped By Company",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4040/api/stations/by-company",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"stations",
+								"by-company"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Companies",
+			"item": [
+				{
+					"name": "Companies Index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4040/api/companies?perPage=10&page=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"companies"
+							],
+							"query": [
+								{
+									"key": "perPage",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Company",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4040/api/companies/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"companies",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Company",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4040/api/companies/72",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"companies",
+								"72"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Company",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Amended company test name\",\n    \"parentId\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4040/api/companies/72",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"companies",
+								"72"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store/Create Company",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New (Root) Company Test Name\",\n    \"parentId\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4040/api/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4040",
+							"path": [
+								"api",
+								"companies"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API Documentation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4040/api/docs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4040",
+					"path": [
+						"api",
+						"docs"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
