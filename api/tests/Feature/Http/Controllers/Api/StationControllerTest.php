@@ -259,8 +259,8 @@ class StationControllerTest extends TestCase
         $updatedCompany        = Company::factory()->create();
         $updatedStationName    = 'Connelly 24 EV';
         $updatedStationAddress = '340 Cory Course South Eldon, VT 96142';
-        $updatedStationLat     = -177.534949;
-        $updatedStationLong    = -68.307831;
+        $updatedStationLong    = -177.534949;
+        $updatedStationLat     = -68.307831;
 
         $response = $this->putJson(route('stationsstations.update', [$station]), [
             'name'      => $updatedStationName,
